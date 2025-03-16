@@ -1,40 +1,87 @@
 #include "Header.h"
 #include "my_function.h"
-
-
-
 using namespace std;
 
 int N = 16;
 double* masA = nullptr;
 double* masB = nullptr;
+int sizeMas();
+void save();
+void load();
+void Table(double* mas, int N, const string& title , const string& namep);
 void menulab1() {
 	masA = new double[N];
 	masB = new double[N];
+	for (int i = 0; i < N; i++) {
+		masA[i] = masB[i] = 0;
+	}
 	char ch = 0;
 	do {
 		
 		system("cls");
 		
 		SetColor (CL_YELLOW,0);
-		cout << " Ìåíþ Ëàáîðàòîðêè 1\n";
+		cout << " ÐœÐµÐ½ÑŽ Ð›Ð°Ð±Ð¾Ñ€Ð°Ñ‚Ð¾Ñ€ÐºÐ¸ 1\n";
 		SetColor();
-		cout << "  1 - ðåøåíèå 1\n";
-		cout << "  2 - ðåøåíèå 2\n";
-		cout << " ESC - Âûõîä èç ïðîãðàììû \n\n";
+		cout << "  0 - Ð¸Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð¼Ð°ÑÑÐ¸Ð²Ð°\n";
+		cout << "  1 - Ñ€ÐµÑˆÐµÐ½Ð¸Ðµ 1\n";
+		cout << "  2 - Ð²Ð²ÐµÑÑ‚Ð¸ Ð¸ ÑÐ¾Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ Ð¼Ð°ÑÑÐ¸Ð² Ð² Ñ„Ð°Ð¹Ð»\n";
+		cout << "  3 - Ð·Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð¸ Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ñ‚ÑŒ Ð¼Ð°ÑÑÐ¸Ð² Ð¸Ð· Ñ„Ð°Ð¹Ð»Ð°\n";
+		cout << "  4 - Ð¢Ð°Ð±Ð»Ð¸Ñ‡Ð½Ð¾Ðµ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð¼Ð°ÑÑÐ¸Ð²Ð¾Ð²";
+		cout << " ESC - Ð’Ñ‹Ñ…Ð¾Ð´ Ð¸Ð· Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹ \n\n";
 
 		ch = _getch();
 
 		switch (ch) {
+		case '0': sizeMas(); break;
 		case '1': lab1Dot1(); break;
-		case '2': lab1Dot2(); break;
-		case '3': break;
-		case '4': break;
+		case '2':
+			system("cls");
+			uslovie1();
+			save();
+			break;
+		case '3':
+			system("cls");
+			uslovie1();
+			load();
+			system("pause");
+			break;
+		case '4':
+			system("cls");
+			uslovie1();
+			Table(masA, N, "Ð¸ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð²" , "A");
+			cout << "\n";
+			Table(masB, N, "Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð½Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð²", "B");
+			system("pause");
+			break;
+		case 27: break;
+		default:
+			cout << " ÐÐ°Ð¶Ð°Ñ‚Ð° ÐºÐ»Ð°Ð²Ð¸ÑˆÐ° " << ch << " Ñ ÐºÐ¾Ð´Ð¾Ð¼ " << int(ch) << endl;
+			Sleep(1500);
 		}
 
 	} while (ch != 27);
 }
-#include <limits>
+int sizeMas() {
+	while (true) {
+		cout << "Ð£ÐºÐ°Ð¶Ð¸Ñ‚Ðµ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð¼Ð°ÑÑÐ¸Ð²Ð°: "; cin >> N;
+		if (N < 10) {
+			cout << "ÐŸÐ¾ ÑƒÑÐ»Ð¾Ð²Ð¸ÑŽ Ñ‚Ñ€ÐµÐ±ÑƒÐµÑ‚ÑÑ Ð¼Ð¸Ð½Ð¸Ð¼ÑƒÐ¼ 10 ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²\n";
+			system("pause");
+		}
+		else {
+			cout << "Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ð¼Ð°ÑÑÐ¸Ð²? 1 - Ð´Ð°\n";
+			SetColor();
+			if (_getch() == '1') {
+				masA = new double[N];
+				masB = new double[N];
+			}
+			return N;
+			break;
+		}
+		CLEARLINE(3);
+	}
+}
 void inmas() {
 	for (int i = 1; i <= N; i++) {
 		while (true) {
@@ -44,7 +91,7 @@ void inmas() {
 			cout << "  A[" << i << "]=";
 			cin >> masA[i - 1];
 			SetColor();
-			cout << "\033[F\r\033[K";
+			CLEARLINE(1);
 			if (cin.fail()) {
 				cin.clear();
 				cin.ignore(cin.rdbuf() -> in_avail());
@@ -76,23 +123,23 @@ void lab1Dot1() {
 		system("cls");
 		uslovie1();
 		SetColor(CL_YELLOW, 0);
-		cout << "  Ðåøåíèå 1:\n\n";
+		cout << "  Ð ÐµÑˆÐµÐ½Ð¸Ðµ 1:\n\n";
 		SetColor();
-		cout << "  Ââåäèòå ìàññèâ äàííûõ" << endl;
+		cout << "  Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¼Ð°ÑÑÐ¸Ð² Ð´Ð°Ð½Ð½Ñ‹Ñ…" << endl;
 		inmas();
-		cout << "\033[F\r\033[K";
-		cout << "  Èñõîäíûé ìàññèâ: \n";
+		CLEARLINE(1);
+		cout << "  Ð˜ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð²: \n";
 		outmasA();
-		cout << endl << "  èòîãîâûé ìàññèâ: \n";
+		cout << endl << "  Ð¸Ñ‚Ð¾Ð³Ð¾Ð²Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð²: \n";
 		lab1res();
 		outmasB();
 		ch = _getch();
 }
 string namef;
 void save() {
-	cout << "  Ââåäèòå íàçâàíèå ôàéëà ";
+	cout << "  Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ„Ð°Ð¹Ð»Ð° ";
 	cin >> namef;
-	cout << "  Ââåäèòå ìàññèâ äàííûõ" << endl;
+	cout << "  Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¼Ð°ÑÑÐ¸Ð² Ð´Ð°Ð½Ð½Ñ‹Ñ…" << endl;
 	inmas();
 	ofstream File(namef);
 	if (File.is_open()) {
@@ -100,16 +147,16 @@ void save() {
 			File << masA[i - 1] << " ";
 		}
 		File.close();
-		cout << "\n  Äààíûå çãðóæåíû â ôàéë: " << namef << endl;
-		Sleep(1500);
+		cout << "\n  Ð”Ð°Ð½Ð½Ñ‹Ðµ Ð·Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹ Ð² Ñ„Ð°Ð¹Ð»: " << namef << endl;
+		Sleep(2000);
 	}
 	else {
-		cout << "  Íå óäàëîñü çãðóçèòü äàííûå â ôàéë" << endl;
+		cout << "  ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð·Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð² Ñ„Ð°Ð¹Ð»" << endl;
 		Sleep(1500);
 	}
 }
 void load() {
-	cout << "  Ââåäèòå íàçâàíèå ôàéëà ";
+	cout << "  Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ„Ð°Ð¹Ð»Ð° ";
 	cin >> namef;
 	ifstream File(namef);
 	if (File.is_open()) {
@@ -117,53 +164,25 @@ void load() {
 			File >> masA[i - 1];
 		}
 		File.close();
-		cout << "\n  ïîëó÷åíûe äàííûå èç ôàéëà: " << namef << endl;
+		cout << "\n  Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ñ‹e Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð¸Ð· Ñ„Ð°Ð¹Ð»Ð°: " << namef << endl;
 		outmasA();
-		cout << "\n  îáðàáîòàíûé ìàññèâ: \n";
+		cout << "\n  Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ñ‹Ð¹ Ð¼Ð°ÑÑÐ¸Ð²: \n";
 		lab1res();
 		outmasB();
+		cout << endl;
 	}
 	else {
-		cout << "  Íå óäàëîñü îòêðûòü ôàéë" << endl;
+		cout << "  ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ñ„Ð°Ð¹Ð»" << endl;
 		Sleep(1500);
 	}
 
 }
-
-void size() {
-	cout << "  ââåäèòå ðàçìåð ìàññèâà:";
-	cin >> N;
-}
-void lab1Dot2() {
-	char ch = 0;
-	do {
-		system("cls");
-		uslovie1();
-		SetColor(CL_YELLOW, 0);
-		cout << "  Ðåøåíèå 2:\n\n";
-		SetColor();
-		cout << "  1 - ââåñòè è ñîõðàíèòü ìàññèâ â ôàéë\n";
-		cout << "  2 - çãðóçèòü è îáðàáîòàòü ìàññèâ èç ôàéëà\n";
-		cout << "  3 - èçìåíèòü ðàçìåð ìàññèâà\n";
-
-		ch = _getch();
-		switch (ch) {
-		case '1': save(); break;
-		case '2': load(); break;
-		case '3': size(); break;
-		//case '4': tabl(); break;
-		}
-		ch = _getch();
-	} while (ch != 27);
-}
-
-
 void lab1res() {
-	for (int i = 0; i <= N - 1; i++) {
+	for (int i = 0; i < N ; i++) {
 		masB[i] = masA[i];
 	}
 	int maxi = 0;
-	for (int i = 1; i <= N - 1; i++) {
+	for (int i = 1; i < N ; i++) {
 		if (masA[i] > masA[maxi]) {
 			maxi = i;
 		}
@@ -179,6 +198,13 @@ void lab1res() {
 		for (int i = 0; i <= N - 1; i++) {
 			masB[i] = masA[i] / 3;
 		}
+	}
+	
+}
+void Table(double* mas, int N, const string& title , const string& namep) {
+	cout << title << endl;
+	for (int i = 0; i < N; i++) {
+		cout << "|"  << namep <<left<< setw(4) << i + 1 << setw(2) << ":  " << setw(10) << left  << mas[i] << endl;
 	}
 	
 }
