@@ -9,6 +9,8 @@ int sizeMas();
 void save();
 void load();
 void Table(double* pmas, int pnsize, int pnsec, string pstitle);
+void Tabletex(double* mas, int N, const string& title, const string& namep);
+void outmas(double masi[]);
 void menulab1() {
 	masA = new double[N];
 	masB = new double[N];
@@ -26,8 +28,10 @@ void menulab1() {
 		cout << "  0 - изменить размер массива\n";
 		cout << "  1 - решение 1\n";
 		cout << "  2 - ввести и сохранить массив в файл\n";
-		cout << "  3 - згрузить и обработать массив из файла\n";
-		cout << "  4 - Табличное представление массивов";
+		cout << "  3 - згрузить массив из файла\n";
+		cout << "  4 - Решение задачи данные из файла\n";
+		cout << "  5 - табличное графическое представление массива\n";
+		cout << "  6 - табличное представление массива\n";
 		cout << " ESC - Выход из программы \n\n";
 
 		ch = _getch();
@@ -49,11 +53,24 @@ void menulab1() {
 		case '4':
 			system("cls");
 			uslovie1();
+			SetColor(CL_YELLOW, 0);
+			cout << "  Решение 1:\n\n";
+			SetColor();
+			load();
+			cout << endl << "  итоговый массив: \n";
+			lab1res();
+			outmas(masB);
+			ch = _getch();
+			system("pause");
+		case '5':
+			system("cls");
+			uslovie1();
 			Table(masA, N, N, "исходный массив");
-			
-			//Table(masB, N, 10, "обработанный массив");
-			
+			Table(masB, N, N, "обработанный массив");
+		case '6':
+			Tabletex(masA, N, "исходный массив", "A");
 			break;
+
 		case 27: break;
 		default:
 			cout << " Нажата клавиша " << ch << " с кодом " << int(ch) << endl;
@@ -62,6 +79,7 @@ void menulab1() {
 
 	} while (ch != 27);
 }
+//размер массива
 int sizeMas() {
 	while (true) {
 		cout << "Укажите размер массива: "; cin >> N;
@@ -82,41 +100,49 @@ int sizeMas() {
 		CLEARLINE(3);
 	}
 }
+//ввод массива
 void inmas() {
 	for (int i = 1; i <= N; i++) {
-		while (true) {
-			if (i == N) {
-				SetColor(CL_RED, 0);
-			}
-			cout << "  A[" << i << "]=";
-			cin >> masA[i - 1];
-			SetColor();
-			CLEARLINE(1);
-			if (cin.fail()) {
-				cin.clear();
-				cin.ignore(cin.rdbuf()->in_avail());
-
-			}
-			else {
-				break;
-			}
+		string input;
+		if (i == N) {
+			SetColor(CL_RED, 0);
 		}
+		while (true) {
+			cout << "  A[" << i << "]=";
+			getline(cin, input);
+			
+			try {
+				size_t pos = 0;
+				masA[i - 1] = stod(input, &pos);
+				if (pos == input.size()) {
+					cout << "\033[F\r\033[K";
+					break;
+				}
+				else{ cout << "\033[F\r\033[K"; }
+			}
+			catch (const std::invalid_argument&){ cout << "\033[F\r\033[K"; }
+		}
+		SetColor();
 	}
 }
-void outmasA() {
+//вывод мссива
+void outmas(double masi[]) {
 	cout << "[";
-	for (int i = 0; i <= N - 2; i++) {
-		cout << " " << masA[i] << ",";
+	for (int i = 0; i < N; i++) {
+		double intPart;
+		double fracPart = std::modf(masi[i], &intPart);
+		if (std::abs(fracPart) >= 0.001) {
+			cout << " " << fixed << setprecision(2) << masi[i] << " ";
+		}else{
+			cout << " " << masi[i] << " ";
+		}
+		if (i != N - 1) {
+			cout << ",";
+		}
+		else { cout << "]";}
 	}
-	cout << " " << masA[N - 1] << " ]";
 }
-void outmasB() {
-	cout << "[";
-	for (int i = 0; i <= N - 2; i++) {
-		cout << " " << masB[i] << ",";
-	}
-	cout << " " << masB[N - 1] << " ]";
-}
+//решение 1
 void lab1Dot1() {
 
 	char ch = 0;
@@ -129,25 +155,26 @@ void lab1Dot1() {
 	inmas();
 	CLEARLINE(1);
 	cout << "  Исходный массив: \n";
-	outmasA();
+	outmas(masA);
 	cout << endl << "  итоговый массив: \n";
 	lab1res();
-	outmasB();
+	outmas(masB);
 	ch = _getch();
 }
+// сохранить
 string namef;
 void save() {
 	cout << "  Введите название файла ";
-	cin >> namef;
-	cout << "  Введите массив данных" << endl;
+	getline(cin, namef);
+	cout << "\n  Введите массив данных \n";
 	inmas();
 	ofstream File(namef);
 	if (File.is_open()) {
 		for (int i = 1; i <= N; i++) {
-			File << masA[i - 1] << " ";
+			File << masA[i - 1] << endl;
 		}
 		File.close();
-		cout << "\n  Данные згружены в файл: " << namef << endl;
+		cout << "  Данные згружены в файл: " << namef << endl;
 		Sleep(2000);
 	}
 	else {
@@ -155,28 +182,61 @@ void save() {
 		Sleep(1500);
 	}
 }
+// загрузить
 void load() {
 	cout << "  Введите название файла ";
-	cin >> namef;
+	getline(cin, namef);
 	ifstream File(namef);
+	int lineCount = 0;
+	string line;
+	while (getline(File, line)) {
+			lineCount++;
+	}
+	if (lineCount >= N) {
+		if (lineCount > N) {
+			cout << " в массив были загружены первые "<< N <<" ,так как размер массива меньше размера файла";
+		}
+	}
+	else{
+		cout << "  размер массива больше размера файла, введите недостоющие элементы\n";
+		for (int i = lineCount + 1; i <= N; i++) {
+			string input;
+			if (i == N) {
+				SetColor(CL_RED, 0);
+			}
+			while (true) {
+				cout << "  A[" << i << "]=";
+				getline(cin, input);
+
+				try {
+					size_t pos = 0;
+					masA[i - 1] = stod(input, &pos);
+					if (pos == input.size()) {
+						cout << "\033[F\r\033[K";
+						break;
+					}
+					else { cout << "\033[F\r\033[K"; }
+				}
+				catch (const std::invalid_argument&) { cout << "\033[F\r\033[K"; }
+			}
+			SetColor();
+		}
+	}
 	if (File.is_open()) {
 		for (int i = 1; i <= N; i++) {
 			File >> masA[i - 1];
 		}
 		File.close();
-		cout << "\n  полученыe данные из файла: " << namef << endl;
-		outmasA();
-		cout << "\n  обработаный массив: \n";
-		lab1res();
-		outmasB();
+		cout << "\n  полученныe данные из файла: " << endl;
+		outmas(masA);
 		cout << endl;
 	}
 	else {
 		cout << "  Не удалось открыть файл" << endl;
 		Sleep(1500);
 	}
-
 }
+// обработка массива
 void lab1res() {
 	for (int i = 0; i < N; i++) {
 		masB[i] = masA[i];
@@ -201,6 +261,7 @@ void lab1res() {
 	}
 
 }
+//текстовая таблица
 void Tabletex(double* mas, int N, const string& title, const string& namep) {
 	cout << title << endl;
 	for (int i = 0; i < N; i++) {
@@ -208,17 +269,18 @@ void Tabletex(double* mas, int N, const string& title, const string& namep) {
 	}
 
 }
+//графическая таблица
 void Table(double* pmas, int pnsize, int pnsec, string pstitle) {
-	//system("cls");
-	HWND hwnd = (HWND)GetStdHandle(STD_OUTPUT_HANDLE); //GetConsoleWindow();
+	HWND hwnd = (HWND)GetStdHandle(STD_OUTPUT_HANDLE);
 	HDC hdc = GetDC(GetConsoleWindow());
+
 	CONSOLE_FONT_INFO conf{};
 	GetCurrentConsoleFont(hwnd, false, &conf);
-	COORD cxy = GetCursorPosition();
+	COORD cxy = CURSORPOS;
 
 
 	int indentY = conf.dwFontSize.Y * (cxy.Y + 1), // отступ начала граф вывода
-		indentX = 60;
+		indentX = 40;
 
 	HFONT hfont = CreateFontA(34, 0, 0, 0, FW_NORMAL, false, false, false, RUSSIAN_CHARSET,
 		OUT_OUTLINE_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, "Times New Roman");
@@ -277,7 +339,7 @@ void Table(double* pmas, int pnsize, int pnsec, string pstitle) {
 			}
 
 		}
-
 	}
+	LINES(10);
 	_getch();
 }
