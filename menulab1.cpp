@@ -8,7 +8,7 @@ double* masB = nullptr;
 int sizeMas();
 void save();
 void load();
-void Table(double* mas, int N, const string& title , const string& namep);
+void Table(double* pmas, int pnsize, int pnsec, string pstitle);
 void menulab1() {
 	masA = new double[N];
 	masB = new double[N];
@@ -17,10 +17,10 @@ void menulab1() {
 	}
 	char ch = 0;
 	do {
-		
+
 		system("cls");
-		
-		SetColor (CL_YELLOW,0);
+
+		SetColor(CL_YELLOW, 0);
 		cout << " Меню Лабораторки 1\n";
 		SetColor();
 		cout << "  0 - изменить размер массива\n";
@@ -49,10 +49,10 @@ void menulab1() {
 		case '4':
 			system("cls");
 			uslovie1();
-			Table(masA, N, "исходный массив" , "A");
-			cout << "\n";
-			Table(masB, N, "обработанный массив", "B");
-			system("pause");
+			Table(masA, N, N, "исходный массив");
+			
+			//Table(masB, N, 10, "обработанный массив");
+			
 			break;
 		case 27: break;
 		default:
@@ -94,9 +94,9 @@ void inmas() {
 			CLEARLINE(1);
 			if (cin.fail()) {
 				cin.clear();
-				cin.ignore(cin.rdbuf() -> in_avail());
+				cin.ignore(cin.rdbuf()->in_avail());
 
-			} 
+			}
 			else {
 				break;
 			}
@@ -120,20 +120,20 @@ void outmasB() {
 void lab1Dot1() {
 
 	char ch = 0;
-		system("cls");
-		uslovie1();
-		SetColor(CL_YELLOW, 0);
-		cout << "  Решение 1:\n\n";
-		SetColor();
-		cout << "  Введите массив данных" << endl;
-		inmas();
-		CLEARLINE(1);
-		cout << "  Исходный массив: \n";
-		outmasA();
-		cout << endl << "  итоговый массив: \n";
-		lab1res();
-		outmasB();
-		ch = _getch();
+	system("cls");
+	uslovie1();
+	SetColor(CL_YELLOW, 0);
+	cout << "  Решение 1:\n\n";
+	SetColor();
+	cout << "  Введите массив данных" << endl;
+	inmas();
+	CLEARLINE(1);
+	cout << "  Исходный массив: \n";
+	outmasA();
+	cout << endl << "  итоговый массив: \n";
+	lab1res();
+	outmasB();
+	ch = _getch();
 }
 string namef;
 void save() {
@@ -178,11 +178,11 @@ void load() {
 
 }
 void lab1res() {
-	for (int i = 0; i < N ; i++) {
+	for (int i = 0; i < N; i++) {
 		masB[i] = masA[i];
 	}
 	int maxi = 0;
-	for (int i = 1; i < N ; i++) {
+	for (int i = 1; i < N; i++) {
 		if (masA[i] > masA[maxi]) {
 			maxi = i;
 		}
@@ -199,12 +199,85 @@ void lab1res() {
 			masB[i] = masA[i] / 3;
 		}
 	}
-	
+
 }
-void Table(double* mas, int N, const string& title , const string& namep) {
+void Tabletex(double* mas, int N, const string& title, const string& namep) {
 	cout << title << endl;
 	for (int i = 0; i < N; i++) {
-		cout << "|"  << namep <<left<< setw(4) << i + 1 << setw(2) << ":  " << setw(10) << left  << mas[i] << endl;
+		cout << "|" << namep << left << setw(4) << i + 1 << setw(2) << ":  " << setw(10) << left << mas[i] << endl;
 	}
-	
+
+}
+void Table(double* pmas, int pnsize, int pnsec, string pstitle) {
+	//system("cls");
+	HWND hwnd = (HWND)GetStdHandle(STD_OUTPUT_HANDLE); //GetConsoleWindow();
+	HDC hdc = GetDC(GetConsoleWindow());
+	CONSOLE_FONT_INFO conf{};
+	GetCurrentConsoleFont(hwnd, false, &conf);
+	COORD cxy = GetCursorPosition();
+
+
+	int indentY = conf.dwFontSize.Y * (cxy.Y + 1), // отступ начала граф вывода
+		indentX = 60;
+
+	HFONT hfont = CreateFontA(34, 0, 0, 0, FW_NORMAL, false, false, false, RUSSIAN_CHARSET,
+		OUT_OUTLINE_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, "Times New Roman");
+	HFONT holdfont = (HFONT)SelectObject(hdc, hfont);
+
+	SetTextColor(hdc, RGB(0, 255, 255));
+	SetBkColor(hdc, RGB(0, 0, 0));
+	TextOutA(hdc, indentX + 100, indentY, pstitle.c_str(), pstitle.length());
+	SelectObject(hdc, holdfont);
+	DeleteObject(hfont);
+
+
+	indentY += 34;
+	int nsec = pnsize / pnsec + ((pnsize % pnsec > 0) ? 1 : 0);
+
+	HPEN hpen = CreatePen(PS_SOLID, 2, RGB(255, 255, 255));
+	LOGBRUSH lgbr{ PS_SOLID, RGB(94, 94, 94), 0 };
+	HBRUSH hbrush = CreateBrushIndirect(&lgbr);
+	HANDLE oldbrush = SelectObject(hdc, hbrush),
+		odlpen = SelectObject(hdc, hpen);
+
+
+	Rectangle(hdc, indentX, indentY, indentX + pnsec * 5 * conf.dwFontSize.X, indentY + (5 * conf.dwFontSize.Y) * nsec);
+	for (int i = 0; i < nsec; i++) {
+		int nx = indentX,
+			nx2 = indentX + pnsec * 5 * conf.dwFontSize.X;
+		MoveToEx(hdc, nx, indentY + i * 5 * conf.dwFontSize.Y + (5 * conf.dwFontSize.Y) / 2, NULL);
+		LineTo(hdc, nx2, indentY + i * 5 * conf.dwFontSize.Y + (5 * conf.dwFontSize.Y) / 2);
+		MoveToEx(hdc, nx, indentY + i * (5 * conf.dwFontSize.Y), NULL);
+		LineTo(hdc, nx2, indentY + i * (5 * conf.dwFontSize.Y));
+	}
+
+	SetTextColor(hdc, RGB(255, 255, 255));
+	SetBkColor(hdc, RGB(94, 94, 94));
+
+	for (int i = 0; i < pnsec; i++) {
+		int nx = indentX + (i) * 5 * conf.dwFontSize.X,
+			ny = indentY;
+		MoveToEx(hdc, nx, ny, NULL);
+		LineTo(hdc, nx, ny + (5 * conf.dwFontSize.Y * nsec));
+
+		char txt[30]{};
+		for (int j = 0; j < nsec; j++) {
+			if (j * pnsec + i < pnsize) {
+				sprintf_s(txt, "X%d", j * pnsec + i + 1);
+				SIZE sz{};
+				GetTextExtentPoint32A(hdc, txt, strlen(txt), &sz);
+				SetTextColor(hdc, RGB(50, 205, 50));
+				SetBkColor(hdc, RGB(94, 94, 94));
+				TextOutA(hdc, nx + (5 * conf.dwFontSize.X - sz.cx) / 2, ny + j * (conf.dwFontSize.Y * 5) + conf.dwFontSize.Y, txt, strlen(txt));
+				sprintf_s(txt, "%5.1f", pmas[j * pnsec + i]);
+				GetTextExtentPoint32A(hdc, txt, strlen(txt), &sz);
+				SetTextColor(hdc, RGB(255, 255, 255));
+				SetBkColor(hdc, RGB(94, 94, 94));
+				TextOutA(hdc, nx + (5 * conf.dwFontSize.X - sz.cx) / 2, ny + j * (conf.dwFontSize.Y * 5) + 3 * conf.dwFontSize.Y, txt, strlen(txt));
+			}
+
+		}
+
+	}
+	_getch();
 }
