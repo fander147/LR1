@@ -3,51 +3,53 @@
 
 void menulab1();
 void lab1Dot1();
+void lab1Dot2();
 void lab1res();
 void setCursorPosition(int x, int y);
 COORD GetCursorPosition();
 void uslovie1();
+string CIN_N();
 
 
 typedef
 enum enColor {
-	CL_BLACK, //С‡РµСЂРЅС‹Р№ 
-	CL_BLUE,   // СЃРёРЅРёР№
-	CL_GREEN,  // Р·РµР»С‘РЅС‹Р№
-	CL_CYAN,  // РіРѕР»СѓР±РѕР№
-	CL_RED,    // РєСЂР°СЃРЅС‹Р№
-	CL_PURPLE,  //С„РёРѕР»РµС‚РѕРІС‹Р№
-	CL_YELLOW,  //Р¶С‘Р»С‚С‹Р№
-	CL_WHITE,  // Р±РµР»С‹Р№
-	CL_LIGHT_BLACK,//С‡РµСЂРЅС‹Р№ СЃРІРµС‚Р»С‹Р№
-	CL_LIGHT_BLUE,//СЃРёРЅРёР№ СЃРІРµС‚Р»С‹Р№
-	CL_LIGHT_GREEN,//Р·РµР»С‘РЅС‹Р№ СЃРІРµС‚Р»С‹Р№
-	CL_LIGHT_CYAN,// РіРѕР»СѓР±РѕР№ СЃРІРµС‚Р»С‹Р№
-	CL_LIGHT_RED,// РєСЂР°СЃРЅС‹Р№ СЃРІРµС‚Р»С‹Р№
-	CL_LIGHT_PURPLE,// С„РёРѕР»РµС‚РѕРІС‹Р№ СЃРІРµС‚Р»С‹Р№
-	CL_LIGHT_YELLOW,//Р¶С‘Р»С‚С‹Р№ СЃРІРµС‚Р»С‹Р№
-	CL_LIGHT_WHITE,//Р±РµР»С‹Р№ СЃРІРµС‚Р»С‹Р№
+	CL_BLACK, //черный 
+	CL_BLUE,   // синий
+	CL_GREEN,  // зелёный
+	CL_CYAN,  // голубой
+	CL_RED,    // красный
+	CL_PURPLE,  //фиолетовый
+	CL_YELLOW,  //жёлтый
+	CL_WHITE,  // белый
+	CL_LIGHT_BLACK,//черный светлый
+	CL_LIGHT_BLUE,//синий светлый
+	CL_LIGHT_GREEN,//зелёный светлый
+	CL_LIGHT_CYAN,// голубой светлый
+	CL_LIGHT_RED,// красный светлый
+	CL_LIGHT_PURPLE,// фиолетовый светлый
+	CL_LIGHT_YELLOW,//жёлтый светлый
+	CL_LIGHT_WHITE,//белый светлый
 
-	Р§Р•Р РќР«Р™ = 0,
-	РЎРРќРР™,
-	Р—Р•Р›РЃРќР«Р™,
-	Р“РћР›РЈР‘РћР™,
-	РљР РђРЎРќР«Р™,
-	Р¤РРћР›Р•РўРћР’Р«Р™,
-	Р–РЃР›РўР«Р™,
-	Р‘Р•Р›Р«Р™,
-	РЎР•Р Р«Р™,
-	РЎР’_РЎРРќРР™,
-	РЎР’_Р—Р•Р›РЃРќР«Р™,
-	РЎР’_Р“РћР›РЈР‘РћР™,
-	РЎР’_РљР РђРЎРќР«Р™,
-	РЎР’_Р¤РРћР›Р•РўРћР’Р«Р™,
-	РЎР’_Р–РЃР›РўР«Р™,
+	ЧЕРНЫЙ = 0,
+	СИНИЙ,
+	ЗЕЛЁНЫЙ,
+	ГОЛУБОЙ,
+	КРАСНЫЙ,
+	ФИОЛЕТОВЫЙ,
+	ЖЁЛТЫЙ,
+	БЕЛЫЙ,
+	СЕРЫЙ,
+	СВ_СИНИЙ,
+	СВ_ЗЕЛЁНЫЙ,
+	СВ_ГОЛУБОЙ,
+	СВ_КРАСНЫЙ,
+	СВ_ФИОЛЕТОВЫЙ,
+	СВ_ЖЁЛТЫЙ,
 
-} COLORS, Р¦Р’Р•РўРђ;// РЅСѓРјРµСЂР°С‚РѕСЂ
+} COLORS, ЦВЕТА;// нумератор
 static COLORS DefBKColor = enColor::CL_BLACK;
 static COLORS DefTextColor = enColor::CL_LIGHT_WHITE;
-//static - РЅСѓР¶РµРЅ, С‡С‚РѕР±С‹ РґР°С‚СЊ РїРѕРЅСЏС‚СЊ, С‡С‚Рѕ РїРµСЂРµРјРµРЅРЅС‹Рµ РіР»РѕР±Р°Р»СЊРЅС‹Рµ
+//static - нужен, чтобы дать понять, что переменные глобальные
 void SetColor(short int pnTextColor, short int pnBkcolor);
 void SetColor();
 void SetDefBkColor(short int pnBkColor);

@@ -5,35 +5,39 @@ using namespace std;
 
 
 void setCursorPosition(int x, int y) {
-    COORD coord = { x, y };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	COORD coord = { x, y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 COORD GetCursorPosition() {
 	CONSOLE_SCREEN_BUFFER_INFO lpCursorInfo;
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &lpCursorInfo);
 	return lpCursorInfo.dwCursorPosition;
 }
-
+string CIN_N( string input) {
+	int X = GetCursorPosition().X;
+	getline(cin, input);
+	setCursorPosition(X, GetCursorPosition().Y - 1);
+}
 void uslovie1()
 {
-	cout << "  ÑƒÑÐ»Ð¾Ð²Ð¸Ðµ Ð·Ð°Ð´Ð°Ñ‡Ð¸:\n  ";
+	cout << "  óñëîâèå çàäà÷è:\n  ";
 	SetColor(CL_BLACK, CL_WHITE);
-	cout << "Ð”Ð°Ð½ Ð¼Ð°ÑÑÐ¸Ð² A1, ... , A16.\n";
+	cout << "Äàí ìàññèâ A1, ... , A16.\n";
 	SetColor();
 	cout << "  ";
 	SetColor(CL_BLACK, CL_WHITE);
-	cout << "Ð•ÑÐ»Ð¸ Ð½Ð¾Ð¼ÐµÑ€ Amax Ð¼ÐµÐ½ÑŒÑˆÐµ Ð´ÐµÑÑÑ‚Ð¸, Ñ‚Ð¾ Ð·Ð°Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð²ÑÐµ Ð¿Ñ€ÐµÐ´ÑˆÐµÑÑ‚Ð²ÑƒÑŽÑ‰Ð¸Ðµ ÐµÐ¼Ñƒ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð½Ð° A2, Ð¸Ð½Ð°Ñ‡Ðµ Ñ€Ð°Ð·Ð´ÐµÐ»Ð¸Ñ‚ÑŒ Ð²ÑÐµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð½Ð° 3.\n\n";
+	cout << "Åñëè íîìåð Amax ìåíüøå äåñÿòè, òî çàìåíèòü âñå ïðåäøåñòâóþùèå åìó ýëåìåíòû íà A2, èíà÷å ðàçäåëèòü âñå ýëåìåíòû íà 3.\n\n";
 	SetColor();
 }
 
 
 void SetColor(short int pnTextColor, short int pnBKColor) {
-    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hStdOut, WORD(pnBKColor & 0x000F) << 4 | (pnTextColor & 0x000F));
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hStdOut, WORD(pnBKColor & 0x000F) << 4 | (pnTextColor & 0x000F));
 }
 
 void SetColor() {
-    SetColor(DefTextColor, DefBKColor);
+	SetColor(DefTextColor, DefBKColor);
 }
 
 void SetDefBkColor(short int pnBKColor) { DefBKColor = (enColor)pnBKColor; }
