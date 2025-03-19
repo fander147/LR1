@@ -38,7 +38,7 @@ void menulab1() {
 		ch = _getch();
 
 		switch (ch) {
-		case '0': sizeMas(); break;
+		case '0': system("cls"); uslovie1(); sizeMas();  break;
 		case '1': lab1Dot1(); break;
 		case '2': lab1Dot2(); break;
 		case '3':
@@ -59,7 +59,7 @@ void menulab1() {
 			cout << "  Решение c файлом:\n\n";
 			SetColor();
 			load();
-			LINES(2);
+			del_line();del_line();
 			lab1res();
 			Tabletex(masA, N, "исходный массив", "A");
 			cout << endl;
@@ -115,6 +115,16 @@ int sizeMas() {
 		CLEARLINE;
 	}
 }
+string vvod() {
+	string input;
+	int Y = GetCursorPosition().Y;
+	getline(cin, input);
+	setCursorPosition(0, Y);
+	SPACE(80);
+	setCursorPosition(0, Y);
+	return input;
+}
+
 //ввод массива
 void inmas() {
 	for (int i = 1; i <= N; i++) {
@@ -124,30 +134,29 @@ void inmas() {
 		}
 		while (true) {
 			cout << "  A[" << i << "]=";
-			getline(cin, input);
+			input = vvod();
 			try {
 				size_t pos = 0;
 				masA[i - 1] = stod(input, &pos);
 				if (pos == input.size()) {
-					//cout << "\033[F\r\033[K";
-					CLEARLINE;
 					break;
 				}
-				else { cout << "\033[F\r\033[K"; }
 			}
-			catch (const std::invalid_argument&) { cout << "\033[F\r\033[K"; }
+			catch (const std::invalid_argument&) { }
 		}
 		SetColor();
 	}
 }
+
 //вывод мссива
 void outmas(double masi[]) {
 	cout << "[";
 	for (int i = 0; i < N; i++) {
 		double intPart;
 		double fracPart = std::modf(masi[i], &intPart);
-		if (std::abs(fracPart) >= 0.001) {
+		if (abs(fracPart) >= 0.001) {
 			cout << " " << fixed << setprecision(2) << masi[i] << " ";
+			cout.unsetf(ios_base::fixed);
 		}
 		else {
 			cout << " " << masi[i] << " ";
@@ -169,7 +178,6 @@ void lab1Dot1() {
 	SetColor();
 	cout << "  Введите массив данных" << endl;
 	inmas();
-	//CLEARLINE;// (1);
 	cout << "  Исходный массив: \n";
 	outmas(masA);
 	cout << endl << "  итоговый массив: \n";
@@ -177,7 +185,7 @@ void lab1Dot1() {
 	outmas(masB);
 	ch = _getch();
 }
-void lab1Dot2(){
+void lab1Dot2() {
 	char ch = 0;
 	system("cls");
 	uslovie1();
@@ -186,7 +194,7 @@ void lab1Dot2(){
 	SetColor();
 	cout << "  Введите массив данных" << endl;
 	inmas();
-	CLEARLINE;// (1);
+	del_line();del_line();
 	lab1res();
 	Tabletex(masA, N, "исходный массив", "A");
 	cout << endl;
@@ -239,18 +247,15 @@ void load() {
 				}
 				while (true) {
 					cout << "  A[" << i << "]=";
-					getline(cin, input);
-
+					input = vvod();
 					try {
 						size_t pos = 0;
 						masA[i - 1] = stod(input, &pos);
 						if (pos == input.size()) {
-							cout << "\033[F\r\033[K";
 							break;
 						}
-						else { cout << "\033[F\r\033[K"; }
 					}
-					catch (const std::invalid_argument&) { cout << "\033[F\r\033[K"; }
+					catch (const std::invalid_argument&) {}
 				}
 				SetColor();
 			}
