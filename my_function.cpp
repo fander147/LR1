@@ -13,10 +13,11 @@ COORD GetCursorPosition() {
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &lpCursorInfo);
 	return lpCursorInfo.dwCursorPosition;
 }
-string CIN_N(string input) {
-	int X = GetCursorPosition().X;
-	getline(cin, input);
-	setCursorPosition(X, GetCursorPosition().Y - 1);
+void del_line() {
+	int Y = GetCursorPosition().Y;
+	setCursorPosition(0, Y);
+	SPACE(80);
+	setCursorPosition(0, Y);
 }
 void uslovie1()
 {
