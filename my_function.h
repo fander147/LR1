@@ -8,8 +8,7 @@ void lab1res();
 void setCursorPosition(int x, int y);
 COORD GetCursorPosition();
 void uslovie1();
-string CIN_N();
-
+void del_line();
 
 typedef
 enum enColor {
