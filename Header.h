@@ -7,6 +7,9 @@
 #include <iomanip>
 #include <limits>
 
-#define CLEARLINE(n) for (int i=0;i<n;i++) cout << "\033[F\r\033[K"
-#define LINES(a) for (int i=0;i < a;i++) cout << endl
-#define CURSORPOS GetCursorPosition();
+#define LINES(a) for (int ii=0;ii < a;ii++) cout << endl
+#define CURSORPOS GetCursorPosition()
+#define BACK(n) for (int ii=0; ii<n; ii++) cout<<"\b"
+#define SPACEBACK(n)  SPACE(n); BACK(n) 
+#define SPACE(a) for (int i=0;i < a;i++) cout << " "
+#define CLEARLINE setCursorPosition( 0 , GetCursorPosition().Y); SPACEBACK(80)
