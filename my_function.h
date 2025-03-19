@@ -1,43 +1,55 @@
-#include "Header.h"
-#include "my_function.h"
-using namespace std;
+
+#pragma once
+
+void menulab1();
+void lab1Dot1();
+void lab1Dot2();
+void lab1res();
+void setCursorPosition(int x, int y);
+COORD GetCursorPosition();
+void uslovie1();
+string CIN_N();
 
 
+typedef
+enum enColor {
+	CL_BLACK, //черный 
+	CL_BLUE,   // синий
+	CL_GREEN,  // зелёный
+	CL_CYAN,  // голубой
+	CL_RED,    // красный
+	CL_PURPLE,  //фиолетовый
+	CL_YELLOW,  //жёлтый
+	CL_WHITE,  // белый
+	CL_LIGHT_BLACK,//черный светлый
+	CL_LIGHT_BLUE,//синий светлый
+	CL_LIGHT_GREEN,//зелёный светлый
+	CL_LIGHT_CYAN,// голубой светлый
+	CL_LIGHT_RED,// красный светлый
+	CL_LIGHT_PURPLE,// фиолетовый светлый
+	CL_LIGHT_YELLOW,//жёлтый светлый
+	CL_LIGHT_WHITE,//белый светлый
 
-void setCursorPosition(int x, int y) {
-	COORD coord = { x, y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-COORD GetCursorPosition() {
-	CONSOLE_SCREEN_BUFFER_INFO lpCursorInfo;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &lpCursorInfo);
-	return lpCursorInfo.dwCursorPosition;
-}
-string CIN_N( string input) {
-	int X = GetCursorPosition().X;
-	getline(cin, input);
-	setCursorPosition(X, GetCursorPosition().Y - 1);
-}
-void uslovie1()
-{
-	cout << "  условие задачи:\n  ";
-	SetColor(CL_BLACK, CL_WHITE);
-	cout << "Дан массив A1, ... , A16.\n";
-	SetColor();
-	cout << "  ";
-	SetColor(CL_BLACK, CL_WHITE);
-	cout << "Если номер Amax меньше десяти, то заменить все предшествующие ему элементы на A2, иначе разделить все элементы на 3.\n\n";
-	SetColor();
-}
+	ЧЕРНЫЙ = 0,
+	СИНИЙ,
+	ЗЕЛЁНЫЙ,
+	ГОЛУБОЙ,
+	КРАСНЫЙ,
+	ФИОЛЕТОВЫЙ,
+	ЖЁЛТЫЙ,
+	БЕЛЫЙ,
+	СЕРЫЙ,
+	СВ_СИНИЙ,
+	СВ_ЗЕЛЁНЫЙ,
+	СВ_ГОЛУБОЙ,
+	СВ_КРАСНЫЙ,
+	СВ_ФИОЛЕТОВЫЙ,
+	СВ_ЖЁЛТЫЙ,
 
-
-void SetColor(short int pnTextColor, short int pnBKColor) {
-	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hStdOut, WORD(pnBKColor & 0x000F) << 4 | (pnTextColor & 0x000F));
-}
-
-void SetColor() {
-	SetColor(DefTextColor, DefBKColor);
-}
-
-void SetDefBkColor(short int pnBKColor) { DefBKColor = (enColor)pnBKColor; }
+} COLORS, ЦВЕТА;// нумератор
+static COLORS DefBKColor = enColor::CL_BLACK;
+static COLORS DefTextColor = enColor::CL_LIGHT_WHITE;
+//static - нужен, чтобы дать понять, что переменные глобальные
+void SetColor(short int pnTextColor, short int pnBkcolor);
+void SetColor();
+void SetDefBkColor(short int pnBkColor);
