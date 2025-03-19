@@ -11,5 +11,5 @@
 #define CURSORPOS GetCursorPosition()
 #define BACK(n) for (int ii=0; ii<n; ii++) cout<<"\b"
 #define SPACEBACK(n)  SPACE(n); BACK(n) 
-#define SPACE(a) for (int i=0;i < a;i++) cout << " "
+#define SPACE(a) for (int ii=0;ii < a;ii++) cout << " "
 #define CLEARLINE setCursorPosition( 0 , GetCursorPosition().Y); SPACEBACK(80)
