@@ -27,11 +27,12 @@ void menulab1() {
 		SetColor();
 		cout << "  0 - изменить размер массива\n";
 		cout << "  1 - решение 1\n";
-		cout << "  2 - ввести и сохранить массив в файл\n";
-		cout << "  3 - згрузить массив из файла\n";
-		cout << "  4 - Решение задачи данные из файла\n";
-		cout << "  5 - табличное графическое представление массива\n";
-		cout << "  6 - табличное представление массива\n";
+		cout << "  2 - решение 2\n";
+		cout << "  3 - ввести и сохранить массив в файл\n";
+		cout << "  4 - згрузить массив из файла\n";
+		cout << "  5 - Решение задачи данные из файла\n";
+		cout << "  6 - табличное графическое представление массива\n";
+		cout << "  7 - табличное представление массива\n";
 		cout << " ESC - Выход из программы \n\n";
 
 		ch = _getch();
@@ -39,36 +40,47 @@ void menulab1() {
 		switch (ch) {
 		case '0': sizeMas(); break;
 		case '1': lab1Dot1(); break;
-		case '2':
+		case '2': lab1Dot2(); break;
+		case '3':
 			system("cls");
 			uslovie1();
 			save();
 			break;
-		case '3':
+		case '4':
 			system("cls");
 			uslovie1();
 			load();
 			system("pause");
 			break;
-		case '4':
-			system("cls");
-			uslovie1();
-			SetColor(CL_YELLOW, 0);
-			cout << "  Решение 1:\n\n";
-			SetColor();
-			load();
-			cout << endl << "  итоговый массив: \n";
-			lab1res();
-			outmas(masB);
-			ch = _getch();
-			system("pause");
 		case '5':
 			system("cls");
 			uslovie1();
-			Table(masA, N, N, "исходный массив");
-			Table(masB, N, N, "обработанный массив");
-		case '6':
+			SetColor(CL_YELLOW, 0);
+			cout << "  Решение c файлом:\n\n";
+			SetColor();
+			load();
+			LINES(2);
+			lab1res();
 			Tabletex(masA, N, "исходный массив", "A");
+			cout << endl;
+			Tabletex(masB, N, "обработанный массив", "B");
+			system("pause");
+			break;
+		case '6':
+			system("cls");
+			//uslovie1();
+			cout << endl;
+			Table(masA, N, 16, "исходный массив");
+			LINES(8);
+			Table(masB, N, 16, "обработанный массив");
+			cout << endl;
+			_getch();
+			break;
+		case '7':
+			Tabletex(masA, N, "исходный массив", "A");
+			cout << endl;
+			Tabletex(masB, N, "обработанный массив", "B");
+			system("pause");
 			break;
 
 		case 27: break;
@@ -93,11 +105,14 @@ int sizeMas() {
 			if (_getch() == '1') {
 				masA = new double[N];
 				masB = new double[N];
+				for (int i = 0; i < N; i++) {
+					masA[i] = masB[i] = 0;
+				}
 			}
 			return N;
 			break;
 		}
-		CLEARLINE(3);
+		CLEARLINE;
 	}
 }
 //ввод массива
@@ -110,17 +125,17 @@ void inmas() {
 		while (true) {
 			cout << "  A[" << i << "]=";
 			getline(cin, input);
-			
 			try {
 				size_t pos = 0;
 				masA[i - 1] = stod(input, &pos);
 				if (pos == input.size()) {
-					cout << "\033[F\r\033[K";
+					//cout << "\033[F\r\033[K";
+					CLEARLINE;
 					break;
 				}
-				else{ cout << "\033[F\r\033[K"; }
+				else { cout << "\033[F\r\033[K"; }
 			}
-			catch (const std::invalid_argument&){ cout << "\033[F\r\033[K"; }
+			catch (const std::invalid_argument&) { cout << "\033[F\r\033[K"; }
 		}
 		SetColor();
 	}
@@ -133,13 +148,14 @@ void outmas(double masi[]) {
 		double fracPart = std::modf(masi[i], &intPart);
 		if (std::abs(fracPart) >= 0.001) {
 			cout << " " << fixed << setprecision(2) << masi[i] << " ";
-		}else{
+		}
+		else {
 			cout << " " << masi[i] << " ";
 		}
 		if (i != N - 1) {
 			cout << ",";
 		}
-		else { cout << "]";}
+		else { cout << "]"; }
 	}
 }
 //решение 1
@@ -153,13 +169,29 @@ void lab1Dot1() {
 	SetColor();
 	cout << "  Введите массив данных" << endl;
 	inmas();
-	CLEARLINE(1);
+	//CLEARLINE;// (1);
 	cout << "  Исходный массив: \n";
 	outmas(masA);
 	cout << endl << "  итоговый массив: \n";
 	lab1res();
 	outmas(masB);
 	ch = _getch();
+}
+void lab1Dot2(){
+	char ch = 0;
+	system("cls");
+	uslovie1();
+	SetColor(CL_YELLOW, 0);
+	cout << "  Решение 2:\n\n";
+	SetColor();
+	cout << "  Введите массив данных" << endl;
+	inmas();
+	CLEARLINE;// (1);
+	lab1res();
+	Tabletex(masA, N, "исходный массив", "A");
+	cout << endl;
+	Tabletex(masB, N, "итоговый массив", "B");
+	system("pause");
 }
 // сохранить
 string namef;
@@ -190,39 +222,39 @@ void load() {
 	int lineCount = 0;
 	string line;
 	while (getline(File, line)) {
-			lineCount++;
-	}
-	if (lineCount >= N) {
-		if (lineCount > N) {
-			cout << " в массив были загружены первые "<< N <<" ,так как размер массива меньше размера файла";
-		}
-	}
-	else{
-		cout << "  размер массива больше размера файла, введите недостоющие элементы\n";
-		for (int i = lineCount + 1; i <= N; i++) {
-			string input;
-			if (i == N) {
-				SetColor(CL_RED, 0);
-			}
-			while (true) {
-				cout << "  A[" << i << "]=";
-				getline(cin, input);
-
-				try {
-					size_t pos = 0;
-					masA[i - 1] = stod(input, &pos);
-					if (pos == input.size()) {
-						cout << "\033[F\r\033[K";
-						break;
-					}
-					else { cout << "\033[F\r\033[K"; }
-				}
-				catch (const std::invalid_argument&) { cout << "\033[F\r\033[K"; }
-			}
-			SetColor();
-		}
+		lineCount++;
 	}
 	if (File.is_open()) {
+		if (lineCount >= N) {
+			if (lineCount > N) {
+				cout << " в массив были загружены первые " << N << " ,так как размер массива меньше размера файла";
+			}
+		}
+		else {
+			cout << "  размер массива больше размера файла, введите недостоющие элементы\n";
+			for (int i = lineCount + 1; i <= N; i++) {
+				string input;
+				if (i == N) {
+					SetColor(CL_RED, 0);
+				}
+				while (true) {
+					cout << "  A[" << i << "]=";
+					getline(cin, input);
+
+					try {
+						size_t pos = 0;
+						masA[i - 1] = stod(input, &pos);
+						if (pos == input.size()) {
+							cout << "\033[F\r\033[K";
+							break;
+						}
+						else { cout << "\033[F\r\033[K"; }
+					}
+					catch (const std::invalid_argument&) { cout << "\033[F\r\033[K"; }
+				}
+				SetColor();
+			}
+		}
 		for (int i = 1; i <= N; i++) {
 			File >> masA[i - 1];
 		}
@@ -280,7 +312,7 @@ void Table(double* pmas, int pnsize, int pnsec, string pstitle) {
 
 
 	int indentY = conf.dwFontSize.Y * (cxy.Y + 1), // отступ начала граф вывода
-		indentX = 40;
+		indentX = 30;
 
 	HFONT hfont = CreateFontA(34, 0, 0, 0, FW_NORMAL, false, false, false, RUSSIAN_CHARSET,
 		OUT_OUTLINE_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, VARIABLE_PITCH, "Times New Roman");
@@ -337,9 +369,6 @@ void Table(double* pmas, int pnsize, int pnsec, string pstitle) {
 				SetBkColor(hdc, RGB(94, 94, 94));
 				TextOutA(hdc, nx + (5 * conf.dwFontSize.X - sz.cx) / 2, ny + j * (conf.dwFontSize.Y * 5) + 3 * conf.dwFontSize.Y, txt, strlen(txt));
 			}
-
 		}
 	}
-	LINES(10);
-	_getch();
 }
