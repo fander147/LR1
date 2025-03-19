@@ -13,20 +13,20 @@ COORD GetCursorPosition() {
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &lpCursorInfo);
 	return lpCursorInfo.dwCursorPosition;
 }
-string CIN_N( string input) {
+string CIN_N(string input) {
 	int X = GetCursorPosition().X;
 	getline(cin, input);
 	setCursorPosition(X, GetCursorPosition().Y - 1);
 }
 void uslovie1()
 {
-	cout << "  óñëîâèå çàäà÷è:\n  ";
+	cout << "  ÑƒÑÐ»Ð¾Ð²Ð¸Ðµ Ð·Ð°Ð´Ð°Ñ‡Ð¸:\n  ";
 	SetColor(CL_BLACK, CL_WHITE);
-	cout << "Äàí ìàññèâ A1, ... , A16.\n";
+	cout << "Ð”Ð°Ð½ Ð¼Ð°ÑÑÐ¸Ð² A1, ... , A16.\n";
 	SetColor();
 	cout << "  ";
 	SetColor(CL_BLACK, CL_WHITE);
-	cout << "Åñëè íîìåð Amax ìåíüøå äåñÿòè, òî çàìåíèòü âñå ïðåäøåñòâóþùèå åìó ýëåìåíòû íà A2, èíà÷å ðàçäåëèòü âñå ýëåìåíòû íà 3.\n\n";
+	cout << "Ð•ÑÐ»Ð¸ Ð½Ð¾Ð¼ÐµÑ€ Amax Ð¼ÐµÐ½ÑŒÑˆÐµ Ð´ÐµÑÑÑ‚Ð¸, Ñ‚Ð¾ Ð·Ð°Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð²ÑÐµ Ð¿Ñ€ÐµÐ´ÑˆÐµÑÑ‚Ð²ÑƒÑŽÑ‰Ð¸Ðµ ÐµÐ¼Ñƒ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð½Ð° A2, Ð¸Ð½Ð°Ñ‡Ðµ Ñ€Ð°Ð·Ð´ÐµÐ»Ð¸Ñ‚ÑŒ Ð²ÑÐµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð½Ð° 3.\n\n";
 	SetColor();
 }
 
