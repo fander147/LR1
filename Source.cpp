@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 		{
 		case '0': Creator(); break;
 		case '1': menulab1(); break;
-		case '2': break;
+		case '2': menulab2(); break;
 		case '3': break;
 		case '4': break;
 		case 27: break;
@@ -42,7 +42,7 @@ void Creator() {
 	system("cls");
 	cout << "\n";
 	SPACE(30);
-	cout <<	"Программу написал Щепилов П. Д. из группы 1бИВТ2 \n\n";
+	cout << "Программу написал Щепилов П. Д. из группы 1бИВТ2 \n\n";
 	SPACE(13);
 	cout << "Место обучения: Московский автомобильно-дорожный государственный технический университет\n\n";
 	system("pause");
