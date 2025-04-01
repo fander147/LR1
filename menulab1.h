@@ -6,6 +6,12 @@ void inmas();
 void outmas(double masi[]);
 void lab1res();
 
+extern int N;
+extern double* masA;
+extern double* masB;
+
+
+
 void lab1Dot0();
 void lab1Dot1();
 void lab1Dot2();
