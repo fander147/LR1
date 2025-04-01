@@ -1,10 +1,10 @@
 
+
 #pragma once
 
 void menulab1();
-void lab1Dot1();
-void lab1Dot2();
-void lab1res();
+void menulab2();
+
 void setCursorPosition(int x, int y);
 COORD GetCursorPosition();
 void uslovie1();
