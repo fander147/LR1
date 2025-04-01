@@ -1,16 +1,14 @@
 #include "Header.h"
 #include "my_function.h"
+#include "menulab1.h"
 using namespace std;
 
 int N = 16;
 double* masA = nullptr;
 double* masB = nullptr;
-int sizeMas();
-void save();
-void load();
 void Table(double* pmas, int pnsize, int pnsec, string pstitle);
 void Tabletex(double* mas, int N, const string& title, const string& namep);
-void outmas(double masi[]);
+
 void menulab1() {
 	masA = new double[N];
 	masB = new double[N];
@@ -38,50 +36,14 @@ void menulab1() {
 		ch = _getch();
 
 		switch (ch) {
-		case '0': system("cls"); uslovie1(); sizeMas();  break;
+		case '0': lab1Dot0(); break;
 		case '1': lab1Dot1(); break;
 		case '2': lab1Dot2(); break;
-		case '3':
-			system("cls");
-			uslovie1();
-			save();
-			break;
-		case '4':
-			system("cls");
-			uslovie1();
-			load();
-			system("pause");
-			break;
-		case '5':
-			system("cls");
-			uslovie1();
-			SetColor(CL_YELLOW, 0);
-			cout << "  Решение c файлом:\n\n";
-			SetColor();
-			load();
-			del_line();del_line();
-			lab1res();
-			Tabletex(masA, N, "исходный массив", "A");
-			cout << endl;
-			Tabletex(masB, N, "обработанный массив", "B");
-			system("pause");
-			break;
-		case '6':
-			system("cls");
-			//uslovie1();
-			cout << endl;
-			Table(masA, N, 16, "исходный массив");
-			LINES(8);
-			Table(masB, N, 16, "обработанный массив");
-			cout << endl;
-			_getch();
-			break;
-		case '7':
-			Tabletex(masA, N, "исходный массив", "A");
-			cout << endl;
-			Tabletex(masB, N, "обработанный массив", "B");
-			system("pause");
-			break;
+		case '3': lab1Dot3(); break;
+		case '4': lab1Dot4(); break;
+		case '5': lab1Dot5(); break;
+		case '6': lab1Dot6(); break;
+		case '7': lab1Dot7(); break;
 
 		case 27: break;
 		default:
@@ -90,6 +52,83 @@ void menulab1() {
 		}
 
 	} while (ch != 27);
+}
+void lab1Dot0() {
+	system("cls"); 
+	uslovie1(); 
+	sizeMas();
+}
+void lab1Dot1() {
+	char ch = 0;
+	system("cls");
+	uslovie1();
+	SetColor(CL_YELLOW, 0);
+	cout << "  Решение 1:\n\n";
+	SetColor();
+	cout << "  Введите массив данных" << endl;
+	inmas();
+	cout << "  Исходный массив: \n";
+	outmas(masA);
+	cout << endl << "  итоговый массив: \n";
+	lab1res();
+	outmas(masB);
+	ch = _getch();
+}
+void lab1Dot2() {
+	char ch = 0;
+	system("cls");
+	uslovie1();
+	SetColor(CL_YELLOW, 0);
+	cout << "  Решение 2:\n\n";
+	SetColor();
+	cout << "  Введите массив данных" << endl;
+	inmas();
+	del_line();del_line();
+	lab1res();
+	Tabletex(masA, N, "исходный массив", "A");
+	cout << endl;
+	Tabletex(masB, N, "итоговый массив", "B");
+	system("pause");
+}
+void lab1Dot3() {
+	system("cls");
+	uslovie1();
+	save();
+}
+void lab1Dot4() {
+	system("cls");
+	uslovie1();
+	load();
+	system("pause");
+}
+void lab1Dot5() {
+	system("cls");
+	uslovie1();
+	SetColor(CL_YELLOW, 0);
+	cout << "  Решение c файлом:\n\n";
+	SetColor();
+	load();
+	del_line();del_line();
+	lab1res();
+	Tabletex(masA, N, "исходный массив", "A");
+	cout << endl;
+	Tabletex(masB, N, "обработанный массив", "B");
+	system("pause");
+}
+void lab1Dot6() {
+	system("cls");
+	cout << endl;
+	Table(masA, N, 16, "исходный массив");
+	LINES(8);
+	Table(masB, N, 16, "обработанный массив");
+	cout << endl;
+	_getch();
+}
+void lab1Dot7() {
+	Tabletex(masA, N, "исходный массив", "A");
+	cout << endl;
+	Tabletex(masB, N, "обработанный массив", "B");
+	system("pause");
 }
 //размер массива
 int sizeMas() {
@@ -142,7 +181,7 @@ void inmas() {
 					break;
 				}
 			}
-			catch (const std::invalid_argument&) { }
+			catch (const std::invalid_argument&) {}
 		}
 		SetColor();
 	}
@@ -167,40 +206,7 @@ void outmas(double masi[]) {
 		else { cout << "]"; }
 	}
 }
-//решение 1
-void lab1Dot1() {
 
-	char ch = 0;
-	system("cls");
-	uslovie1();
-	SetColor(CL_YELLOW, 0);
-	cout << "  Решение 1:\n\n";
-	SetColor();
-	cout << "  Введите массив данных" << endl;
-	inmas();
-	cout << "  Исходный массив: \n";
-	outmas(masA);
-	cout << endl << "  итоговый массив: \n";
-	lab1res();
-	outmas(masB);
-	ch = _getch();
-}
-void lab1Dot2() {
-	char ch = 0;
-	system("cls");
-	uslovie1();
-	SetColor(CL_YELLOW, 0);
-	cout << "  Решение 2:\n\n";
-	SetColor();
-	cout << "  Введите массив данных" << endl;
-	inmas();
-	del_line();del_line();
-	lab1res();
-	Tabletex(masA, N, "исходный массив", "A");
-	cout << endl;
-	Tabletex(masB, N, "итоговый массив", "B");
-	system("pause");
-}
 // сохранить
 string namef;
 void save() {
