@@ -54,8 +54,8 @@ void menulab1() {
 	} while (ch != 27);
 }
 void lab1Dot0() {
-	system("cls"); 
-	uslovie1(); 
+	system("cls");
+	uslovie1();
 	sizeMas();
 }
 void lab1Dot1() {
@@ -69,8 +69,10 @@ void lab1Dot1() {
 	inmas();
 	cout << "  Исходный массив: \n";
 	outmas(masA);
+	int masmaxi = lab1res();
+	cout <<endl << "\nномер максимального элемента  " << masmaxi + 1 << endl;
+	cout << "значение максимального элемента  " << masA[masmaxi] << endl;
 	cout << endl << "  итоговый массив: \n";
-	lab1res();
 	outmas(masB);
 	ch = _getch();
 }
@@ -83,10 +85,12 @@ void lab1Dot2() {
 	SetColor();
 	cout << "  Введите массив данных" << endl;
 	inmas();
-	del_line();del_line();
-	lab1res();
+	int masmaxi = lab1res();
+	
 	Tabletex(masA, N, "исходный массив", "A");
-	cout << endl;
+	cout << endl << "номер максимального элемента  " << masmaxi + 1 << endl;
+	cout << "значение максимального элемента  " << masA[masmaxi] << "\n\n";
+
 	Tabletex(masB, N, "итоговый массив", "B");
 	system("pause");
 }
@@ -108,10 +112,10 @@ void lab1Dot5() {
 	cout << "  Решение c файлом:\n\n";
 	SetColor();
 	load();
-	del_line();del_line();
-	lab1res();
-	Tabletex(masA, N, "исходный массив", "A");
 	cout << endl;
+	del_line(); del_line();
+	lab1res();
+	
 	Tabletex(masB, N, "обработанный массив", "B");
 	system("pause");
 }
@@ -206,7 +210,10 @@ void outmas(double masi[]) {
 		else { cout << "]"; }
 	}
 }
-
+bool fileExists(string filename) {
+	ifstream file(filename);
+	return file.good();
+}
 // сохранить
 string namef;
 void save() {
@@ -214,12 +221,22 @@ void save() {
 	getline(cin, namef);
 	cout << "\n  Введите массив данных \n";
 	inmas();
-	ofstream File(namef);
-	if (File.is_open()) {
-		for (int i = 1; i <= N; i++) {
-			File << masA[i - 1] << endl;
+	cout << endl;
+	ofstream FileOut;
+	if (fileExists(namef)) {
+		cout << "  Открыть файл для дозаписи? 1 - да.\n";
+		if (_getch() == '1') {
+			FileOut.open(namef, ios::app);
 		}
-		File.close();
+		else {
+			FileOut.open(namef);
+		}
+	}else{FileOut.open(namef); }
+	if (FileOut.is_open()) {
+		for (int i = 1; i <= N; i++) {
+			FileOut << masA[i - 1] << endl;
+		}
+		FileOut.close();
 		cout << "  Данные згружены в файл: " << namef << endl;
 		Sleep(2000);
 	}
@@ -227,60 +244,55 @@ void save() {
 		cout << "  Не удалось згрузить данные в файл" << endl;
 		Sleep(1500);
 	}
+	
+	
+	
 }
+
 // загрузить
 void load() {
 	cout << "  Введите название файла ";
-	getline(cin, namef);
+	cin >> namef;
 	ifstream File(namef);
-	int lineCount = 0;
-	string line;
-	while (getline(File, line)) {
-		lineCount++;
-	}
 	if (File.is_open()) {
-		if (lineCount >= N) {
-			if (lineCount > N) {
-				cout << " в массив были загружены первые " << N << " ,так как размер массива меньше размера файла";
-			}
+		int count = 0;
+		double temp;
+		while (File >> temp) {
+			count++;
 		}
-		else {
-			cout << "  размер массива больше размера файла, введите недостоющие элементы\n";
-			for (int i = lineCount + 1; i <= N; i++) {
-				string input;
-				if (i == N) {
-					SetColor(CL_RED, 0);
-				}
-				while (true) {
-					cout << "  A[" << i << "]=";
-					input = vvod();
-					try {
-						size_t pos = 0;
-						masA[i - 1] = stod(input, &pos);
-						if (pos == input.size()) {
-							break;
-						}
-					}
-					catch (const std::invalid_argument&) {}
-				}
-				SetColor();
-			}
+		if (count == 0) {
+			cout << "  Файл пуст!" << endl;
+			File.close();
+			Sleep(1500);
+			return;
 		}
-		for (int i = 1; i <= N; i++) {
-			File >> masA[i - 1];
+
+		// Возвращаемся в начало файла
+		File.clear();
+		File.seekg(0);
+
+		// Выделяем память под массив
+		delete[] masA;
+		masA = new double[count];
+		N = count;
+
+		// Второй проход - чтение данных
+		for (int i = 0; i < count; i++) {
+			File >> masA[i];
 		}
 		File.close();
-		cout << "\n  полученныe данные из файла: " << endl;
-		outmas(masA);
-		cout << endl;
+
+		cout << "\n  Файл содержит " << N << " элементов\n";
+		Tabletex(masA, N, "полученные данные", "A");
 	}
 	else {
 		cout << "  Не удалось открыть файл" << endl;
 		Sleep(1500);
 	}
 }
+
 // обработка массива
-void lab1res() {
+int lab1res() {
 	for (int i = 0; i < N; i++) {
 		masB[i] = masA[i];
 	}
@@ -302,13 +314,15 @@ void lab1res() {
 			masB[i] = masA[i] / 3;
 		}
 	}
-
+	return(maxi);
 }
 //текстовая таблица
 void Tabletex(double* mas, int N, const string& title, const string& namep) {
+	cout.unsetf(ios_base::fixed);
 	cout << title << endl;
+	cout << "|индекс| значение |"  << endl;
 	for (int i = 0; i < N; i++) {
-		cout << "|" << namep << left << setw(4) << i + 1 << setw(2) << ":  " << setw(10) << left << mas[i] << endl;
+		cout << "|" << namep << left << setw(5) << i + 1 << setw(2) << "|" << setw(9) << left << mas[i] <<"|" << endl;
 	}
 
 }
@@ -383,3 +397,4 @@ void Table(double* pmas, int pnsize, int pnsec, string pstitle) {
 		}
 	}
 }
+//400 !
